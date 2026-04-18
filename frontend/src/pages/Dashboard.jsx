@@ -216,6 +216,46 @@ const Dashboard = () => {
         </div>
 
 
+        {/* Weekly Analytics */}
+          <h2 className="text-xl font-bold text-white mb-4">Weekly Analytics</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-300">
+            <h3 className="text-lg font-semibold text-white mb-4">Productivity Score</h3>
+            <div className="flex justify-center">
+              <DonutChart value={avgProductivity} size={140} color="#6366f1" label="This Week" />
+            </div>
+          </Card>
+
+          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-300">
+            <h3 className="text-lg font-semibold text-white mb-4">Discipline Score</h3>
+            <div className="flex justify-center">
+              <DonutChart value={avgDiscipline} size={140} color="#10b981" label="This Week" />
+            </div>
+          </Card>
+
+          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-300">
+            <h3 className="text-lg font-semibold text-white mb-4">Weekly Trend</h3>
+            <ResponsiveContainer width="100%" height={140}>
+              <LineChart data={weeklyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis dataKey="name" stroke="#9ca3af" style={{ fontSize: '12px' }} />
+                <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#1f2937',
+                    border: '1px solid #374151',
+                    borderRadius: '8px',
+                    fontSize: '12px'
+                  }}
+                />
+                <Line type="monotone" dataKey="productivity" stroke="#6366f1" strokeWidth={2} />
+                <Line type="monotone" dataKey="discipline" stroke="#10b981" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
+          </Card>
+        </div>
+
+
         {/* Important Tasks */}
         {importantTasks.length > 0 && (
           <Card className="mb-6 border-orange-500/30 bg-orange-500/5 backdrop-blur-lg">
@@ -367,44 +407,6 @@ const Dashboard = () => {
           </Card>
         )}
 
-
-        {/* Weekly Analytics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-300">
-            <h3 className="text-lg font-semibold text-white mb-4">Productivity Score</h3>
-            <div className="flex justify-center">
-              <DonutChart value={avgProductivity} size={140} color="#6366f1" label="This Week" />
-            </div>
-          </Card>
-
-          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-300">
-            <h3 className="text-lg font-semibold text-white mb-4">Discipline Score</h3>
-            <div className="flex justify-center">
-              <DonutChart value={avgDiscipline} size={140} color="#10b981" label="This Week" />
-            </div>
-          </Card>
-
-          <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-300">
-            <h3 className="text-lg font-semibold text-white mb-4">Weekly Trend</h3>
-            <ResponsiveContainer width="100%" height={140}>
-              <LineChart data={weeklyData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="name" stroke="#9ca3af" style={{ fontSize: '12px' }} />
-                <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#1f2937',
-                    border: '1px solid #374151',
-                    borderRadius: '8px',
-                    fontSize: '12px'
-                  }}
-                />
-                <Line type="monotone" dataKey="productivity" stroke="#6366f1" strokeWidth={2} />
-                <Line type="monotone" dataKey="discipline" stroke="#10b981" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Card>
-        </div>
 
         {/* Goals Progress */}
         {goals.length > 0 && (

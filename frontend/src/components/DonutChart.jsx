@@ -32,7 +32,7 @@ const DonutChart = ({ value, size = 120, strokeWidth = 10, color = '#6366f1', la
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">{percentage}%</span>
+          <span className="text-2xl font-bold text-white">{percentage}</span>
         </div>
       </div>
       {label && <span className="text-sm text-gray-400 mt-2">{label}</span>}

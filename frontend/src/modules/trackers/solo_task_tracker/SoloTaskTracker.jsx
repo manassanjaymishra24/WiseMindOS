@@ -72,7 +72,7 @@ const SoloTaskTracker = () => {
           className="flex justify-between items-center mb-6"
         >
           <div>
-            <h1 className="text-3xl font-bold young-serif-regular text-gary-200">Solo Task Tracker</h1>
+            <h1 className="text-3xl font-bold young-serif-regular text-gray-200">Solo Task Tracker</h1>
             <p className="text-gray-400">Track individual tasks and to-dos</p>
           </div>
           <button
