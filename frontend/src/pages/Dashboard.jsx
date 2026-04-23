@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Target, CheckCircle, Zap, ArrowRight, UserPlus2, Camera, CalendarDays, Star, AlertTriangle } from 'lucide-react';
+import { TrendingUp, Target, CheckCircle, Zap, ArrowRight, UserPlus2, Camera, CalendarDays, Star, AlertTriangle, ArrowRightIcon } from 'lucide-react';
 import { useApp } from '../store/AppContext';
 import Card from '../components/Card';
 import StatCard from '../components/StatCard';
@@ -233,40 +233,66 @@ const Dashboard = () => {
           </Card>
         </div>
 
-
-        {/* Important Tasks */}
-        {importantTasks.length > 0 && (
-          <Card className="mb-6 border-orange-500/30 bg-orange-500/5 backdrop-blur-lg">
-            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              {/* <span className="text-orange-400">⭐</span> */}
-              <Star className="text-orange-400 " size={18} />
-              Important Tasks
-            </h2>
-            <div className="space-y-3">
-              {importantTasks.slice(0, 4).map(task => (
-                <motion.div key={task.id} whileHover={{ scale: 1.005 }}>
-                  <TaskItem
-                    task={task}
-                    onToggle={toggleTaskCompletion}
-                  />
-                </motion.div>
-              ))}
-              <div className='flex gap-2 w-full h-full justify-between mt-4'>
-                <Link to="/focus-room">
-                  <GradientButton className="w-full h-full flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.5)]" data-testid="focus-room-cta">
-                    <span>Enter Focus Room</span>
-                    <ArrowRight size={20} />
-                  </GradientButton>
-                </Link>
-                <Link to="/trackers/daily-tasks">
-                  <GradientButton className='flex items-center'w-full h-full data-testid="plan-now-btn">
-                    Add To Plan Now
-                  </GradientButton>
-                </Link>
+        <div className='border-orange-500/30 bg-orange-500/5 backdrop-blur-lg rounded-2xl p-6 shadow-lg items-stretch mb-4'>
+          <div className='flex gap-2 flex-col lg:flex-row'>
+            {/* Important Tasks */}
+            {importantTasks.length > 0 && (
+              <div className="bg-transparent flex-1 p-4">
+                <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                  {/* <span className="text-orange-400">⭐</span> */}
+                  <Star className="text-orange-400 " size={18} />
+                  Important Tasks
+                </h2>
+                <p className="text-gray-400 text-sm mb-4">High Priority Tasks, Complete these first.</p>
+                <div className="space-y-3">
+                  {importantTasks.slice(0, 4).map(task => (
+                    <motion.div key={task.id} whileHover={{ scale: 1.005 }}>
+                      <TaskItem
+                        task={task}
+                        onToggle={toggleTaskCompletion}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </Card>
-        )}
+            )}
+
+            <div className="self-stretch border-2 border-red-500/50 rounded-full opacity-0 lg:opacity-100"></div>
+
+            {/* Behind Tasks */}
+            {behindTasks.length > 0 && (
+              <div className="bg-transparent flex-1 p-4">
+                <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                  <AlertTriangle className="text-red-400" size={18} /> Deadline Expired
+                </h2>
+                <p className="text-gray-400 text-sm mb-4">Act fast on these tasks, You are already running late.</p>
+                <div className="space-y-3">
+                  {behindTasks.slice(0, 4).map(task => (
+                    <motion.div key={task.id} whileHover={{ scale: 1.005 }}>
+                      <TaskItem
+                        task={task}
+                        onToggle={toggleTaskCompletion}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className='flex gap-2 w-full mt-4 pt-4'>
+            <Link to="/focus-room" className='flex-1'>
+              <GradientButton className="w-full h-full flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.5)]" data-testid="focus-room-cta">
+                <span>Enter Focus Room</span>
+                <ArrowRight size={20} />
+              </GradientButton>
+            </Link>
+            <Link to="/trackers/daily-tasks" className='flex-1'>
+              <GradientButton className='w-full h-full flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.5)]' data-testid="plan-now-btn">
+                <span>Add To Today's Plan</span> <ArrowRight size={20}/>
+              </GradientButton>
+            </Link>
+          </div>
+        </div>
 
         {/* Today's Tasks */}
         {hasPlannedTasks ? (
@@ -363,39 +389,6 @@ const Dashboard = () => {
                   Plan Now
                 </GradientButton>
               </Link>
-            </div>
-          </Card>
-        )}
-
-        {/* Behind Tasks */}
-        {behindTasks.length > 0 && (
-          <Card className="mb-6 border-red-500/30 bg-orange-400/5 backdrop-blur-lg">
-            <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-              <AlertTriangle className="text-red-400" size={18} /> Deadline Crossed/Approaching
-            </h2>
-            <p className="text-gray-400 text-sm mb-4">Act fast on these tasks, These tasks need your attention.</p>
-            <div className="space-y-3">
-              {behindTasks.slice(0, 4).map(task => (
-                <motion.div key={task.id} whileHover={{ scale: 1.005 }}>
-                  <TaskItem
-                    task={task}
-                    onToggle={toggleTaskCompletion}
-                  />
-                </motion.div>
-              ))}
-              <div className='flex gap-2 w-full h-full justify-between mt-4'>
-                <Link to="/focus-room">
-                  <GradientButton className="w-full h-full flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.5)]" data-testid="focus-room-cta">
-                    <span>Enter Focus Room</span>
-                    <ArrowRight size={20} />
-                  </GradientButton>
-                </Link>
-                <Link to="/trackers/daily-tasks">
-                  <GradientButton className='flex items-center'w-full h-full data-testid="plan-now-btn">
-                    Add To Plan Now
-                  </GradientButton>
-                </Link>
-              </div>
             </div>
           </Card>
         )}
