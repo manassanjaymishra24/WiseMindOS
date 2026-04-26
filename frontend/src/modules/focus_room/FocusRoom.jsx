@@ -248,7 +248,7 @@ hover:scale-110 active:scale-95 cursor-pointer transition-all"
 
               {/* 🧠 BAG (MAIN AREA) */}
               <div>
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-[0_0_40px_rgba(99,102,241,0.15)] h-[92vh] flex flex-col">
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-[0_0_40px_rgba(99,102,241,0.15)] min-h-[92vh] flex flex-col">
 
                   <div className="flex justify-between items-center mb-3">
                     <h2 className="text-white text-lg font-semibold">
