@@ -72,22 +72,6 @@ const DailyTaskTracker = () => {
       !dailyPlan.plannedTasks.some(pt => pt.habitId === habit.id)
   );
 
-  // Timeline sections
-  // const morningTasks = dailyPlan.plannedTasks.filter(t => {
-  //   const hour = parseInt(t.startTime.split(':')[0]);
-  //   return hour >= 6 && hour < 12;
-  // }).sort((a, b) => a.startTime.localeCompare(b.startTime));
-
-  // const afternoonTasks = dailyPlan.plannedTasks.filter(t => {
-  //   const hour = parseInt(t.startTime.split(':')[0]);
-  //   return hour >= 12 && hour < 18;
-  // }).sort((a, b) => a.startTime.localeCompare(b.startTime));
-
-  // const eveningTasks = dailyPlan.plannedTasks.filter(t => {
-  //   const hour = parseInt(t.startTime.split(':')[0]);
-  //   return hour >= 18 || hour < 6;
-  // }).sort((a, b) => a.startTime.localeCompare(b.startTime));
-
   const pendingCount = dailyPlan.plannedTasks.filter(t => !t.completed).length;
   const completedCount = dailyPlan.plannedTasks.filter(t => t.completed).length;
 
@@ -133,7 +117,6 @@ const DailyTaskTracker = () => {
     const diffMinutes = (end - start) / (1000 * 60);
 
     if (diffMinutes < 30) {
-      // alert("Minimum task duration should be 30 minutes");
       showToast({ message: "Minimum task duration should be 30 minutes", status: "error" });
       return;
     }
@@ -145,8 +128,6 @@ const DailyTaskTracker = () => {
       endTime: '10:00',
       isImportant: false
     });
-    setActiveTab('timeline');
-    setActiveView('timeline');
   };
 
   const handleAddTaskToPlan = async () => {
@@ -175,8 +156,6 @@ const DailyTaskTracker = () => {
 
     setSelectedTask(null);
     setShowTimeModal(false);
-    setActiveTab('timeline');
-    setActiveView('timeline');
   };
 
   const getSourceBadge = (source) => {
