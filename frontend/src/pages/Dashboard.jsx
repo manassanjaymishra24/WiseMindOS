@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, Legend, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Target, CheckCircle, Zap, ArrowRight, UserPlus2, Camera, CalendarDays, Star, AlertTriangle, ArrowRightIcon, UserCog, UserPen, LucideTrophy } from 'lucide-react';
 import { useApp } from '../store/AppContext';
 import Card from '../components/Card';
@@ -260,7 +260,7 @@ const Dashboard = () => {
           <Card className="bg-white/5 backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-300">
             <h3 className="text-lg font-semibold text-white mb-4">Weekly Trend</h3>
             <ResponsiveContainer width="100%" height={140}>
-              <LineChart data={weeklyData}>
+              {/* <LineChart data={weeklyData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                 <XAxis dataKey="name" stroke="#9ca3af" style={{ fontSize: '12px' }} />
                 <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
@@ -274,7 +274,46 @@ const Dashboard = () => {
                 />
                 <Line type="monotone" dataKey="productivity" stroke="#6366f1" strokeWidth={2} />
                 <Line type="monotone" dataKey="discipline" stroke="#10b981" strokeWidth={2} />
-              </LineChart>
+              </LineChart> */}
+              <BarChart data={weeklyData} barGap={6}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+
+                <XAxis
+                  dataKey="name"
+                  stroke="#9ca3af"
+                  style={{ fontSize: '12px' }}
+                />
+
+                <YAxis
+                  stroke="#9ca3af"
+                  style={{ fontSize: '12px' }}
+                />
+
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#1f2937',
+                    border: '1px solid #374151',
+                    borderRadius: '8px',
+                    fontSize: '12px'
+                  }}
+                />
+
+                <Legend />
+
+                {/* Productivity Bar */}
+                <Bar
+                  dataKey="productivity"
+                  fill="#6366f1"
+                  radius={[6, 6, 0, 0]}
+                />
+
+                {/* Discipline Bar */}
+                <Bar
+                  dataKey="discipline"
+                  fill="#10b981"
+                  radius={[6, 6, 0, 0]}
+                />
+              </BarChart>
             </ResponsiveContainer>
           </Card>
         </div>
