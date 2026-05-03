@@ -100,35 +100,70 @@ const Dashboard = () => {
     e.preventDefault();
 
     // Prepare only changed fields
-    const updates = {};
+    // const updates = {};
 
+    // if (newProfile.name !== "" && newProfile.name !== user.name) {
+    //   updates.name = newProfile.name;
+    // }
+
+    // if (newProfile.username !== "" && newProfile.username !== user.username) {
+    //   updates.username = newProfile.username;
+    // }
+
+    // if (newProfile.bio !== user.bio) {
+    //   updates.bio = newProfile.bio;
+    // }
+
+    // // If nothing changed → don't call API
+    // if (Object.keys(updates).length === 0) {
+    //   setShowEditProfile(false);
+    //   return;
+    // }
+
+    // // Call context API
+    // const success = await updateUser(updates);
+
+    const formData = new FormData();
+    let hasChanges = false;
+
+    // TEXT fields
     if (newProfile.name !== "" && newProfile.name !== user.name) {
-      updates.name = newProfile.name;
+      formData.append("name", newProfile.name);
+      hasChanges = true;
     }
 
     if (newProfile.username !== "" && newProfile.username !== user.username) {
-      updates.username = newProfile.username;
+      formData.append("username", newProfile.username);
+      hasChanges = true;
     }
 
     if (newProfile.bio !== user.bio) {
-      updates.bio = newProfile.bio;
+      formData.append("bio", newProfile.bio);
+      hasChanges = true;
     }
 
-    // If nothing changed → don't call API
-    if (Object.keys(updates).length === 0) {
+    // 🔥 IMAGE FIELD (IMPORTANT)
+    if (newProfile.profile_picture) {
+      formData.append("profile", newProfile.profile_picture);
+      hasChanges = true;
+    }
+
+    // If nothing changed
+    if (!hasChanges) {
       setShowEditProfile(false);
       return;
     }
 
-    // Call context API
-    const success = await updateUser(updates);
+    // Call API
+    const success = await updateUser(formData);
 
     if (success) {
       // Reset form with updated values
       setNewProfile({
         name: updates.name ?? user.name,
         username: updates.username ?? user.username,
-        bio: updates.bio ?? user.bio
+        bio: updates.bio ?? user.bio,
+        profile_picture: null
       });
 
       setShowEditProfile(false);
