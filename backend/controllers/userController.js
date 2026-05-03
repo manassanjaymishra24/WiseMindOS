@@ -149,29 +149,29 @@ const updateUser = async (req, res) => {
         }
 
 
-        const profile = req.files.profile && req.files.profile[0]
+        // const profile = req.files.profile && req.files.profile[0]
         // const cover = req.files.cover && req.files.cover[0]
         // const profile = req.files?.profile?.[0]
         // const cover = req.files?.cover?.[0]
 
-        if(profile){
-            const buffer = fs.readFileSync(profile.path)
-            const response = await imagekit.upload({
-                file: buffer,
-                fileName: profile.originalname,
-            })
+        // if(profile){
+        //     const buffer = fs.readFileSync(profile.path)
+        //     const response = await imagekit.upload({
+        //         file: buffer,
+        //         fileName: profile.originalname,
+        //     })
 
-            const url = imagekit.url({
-                path: response.filePath,
-                transformation: [
-                    {quality: 'auto'},
-                    {format: 'webp'},
-                    {width: '512'}
-                ]
-            })
-            user.profile_picture = url;
-            isModified = true;
-        }
+        //     const url = imagekit.url({
+        //         path: response.filePath,
+        //         transformation: [
+        //             {quality: 'auto'},
+        //             {format: 'webp'},
+        //             {width: '512'}
+        //         ]
+        //     })
+        //     user.profile_picture = url;
+        //     isModified = true;
+        // }
         
         // if(cover){
         //     const buffer = fs.readFileSync(cover.path)

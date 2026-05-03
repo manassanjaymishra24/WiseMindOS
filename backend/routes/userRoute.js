@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 userRouter.post('/register', registerUser);
 userRouter.post('/login', loginUser);
-userRouter.post('/update', upload.fields([{name: 'profile', maxCount: 1}]), authUser, updateUser);
+userRouter.post('/update', authUser, updateUser);
 userRouter.post('/update-profile-pic', upload.fields([{name: 'profile', maxCount: 1}]), authUser, updateUserProfilePic);
 // userRouter.post('/update', upload.fields([{name: 'profile', maxCount: 1}, {name: 'cover', maxCount: 1}]), protect , updateUserData)
 
