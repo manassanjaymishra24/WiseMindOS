@@ -11,7 +11,6 @@ import ProjectCard from '../components/ProjectCard';
 import TaskItem from '../components/TaskItem';
 import HabitCard from '../components/HabitCard';
 import GradientButton from '../components/GradientButton';
-import { motion } from 'framer-motion'
 import { useMemo } from 'react';
 import profile_pic from '../assets/profile_pic.svg'
 import { useState, useEffect } from 'react';
