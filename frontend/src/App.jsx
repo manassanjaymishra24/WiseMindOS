@@ -5,6 +5,7 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Onboarding from './pages/Onboarding';
+import Pricing from './pages/Pricing';
 import AppLayout from './layouts/AppLayout';
 import Dashboard from './pages/Dashboard';
 import Reports from './pages/Reports';
@@ -34,6 +35,7 @@ import { ToastContainer } from 'react-toastify';
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/report" element={<Reports />} />
 
           {/* Protected Routes with AppLayout */}

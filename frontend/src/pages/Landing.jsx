@@ -317,7 +317,9 @@ hover:scale-[1.02] hover:bg-white/10 transition-all duration-300 hover:drop-shad
               <h3 className="text-white font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li className="hover:text-white transition cursor-pointer">Features</li>
-                <li className="hover:text-white transition cursor-pointer">Pricing</li>
+                <li>
+                  <Link to="/pricing" className="hover:text-white transition cursor-pointer">Pricing</Link>
+                </li>
                 <li className="hover:text-white transition cursor-pointer">Roadmap</li>
               </ul>
             </div>
