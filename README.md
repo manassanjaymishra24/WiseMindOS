@@ -266,7 +266,7 @@ cd ../frontend
 Add the following:
 
 ```env
-VITE_BACKEND_URL=http://localhost:5000
+VITE_BACKEND_URL=http://localhost:4000
 VITE_GOOGLE_CLIENT_ID:your_google_client_id
 ```
 
