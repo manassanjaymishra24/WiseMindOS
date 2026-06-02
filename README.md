@@ -241,6 +241,7 @@ Add the following:
 ```env 
 PORT=4000
 MONGODB_URI=your_mongodb_connection_string
+DB_NAME="wise-mind-os"
 JWT_SECRET=replace_with_a_secure_random_string
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
