@@ -9,26 +9,31 @@ const InputField = ({
   placeholder,
   required = false,
   className = "",
+  id,
+  ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === "password";
+  const inputId = id || props.name;
 
   return (
     <div className={`w-full ${className}`}>
       {label && (
-        <label className="block text-gray-300 text-sm font-medium mb-2">
+        <label htmlFor={inputId} className="block text-gray-300 text-sm font-medium mb-2">
           {label} {required && <span className="text-red-400">*</span>}
         </label>
       )}
 
       <div className="relative">
         <input
+          id={inputId}
           type={isPassword && showPassword ? "text" : type}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
           required={required}
+          {...props}
           className="
             w-full bg-gray-700 text-white border border-gray-600 rounded-lg 
             px-4 py-3 pr-10

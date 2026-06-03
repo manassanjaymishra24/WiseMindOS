@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Reports from './pages/Reports';
 import Roadmap from './pages/Roadmap';
 import Careers from './pages/Careers';
+import Contact from './pages/Contact';
 
 
 import FutureTwin from './modules/simulator_room/FutureTwin';
@@ -42,6 +43,7 @@ import ErrorPage from './pages/ErrorPage';
           <Route path="/report" element={<Reports />} />
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/careers" element={<Careers />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Protected Routes with AppLayout */}
           <Route element={<AppLayout />}>
