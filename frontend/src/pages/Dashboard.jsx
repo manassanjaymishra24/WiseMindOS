@@ -347,8 +347,6 @@ const Dashboard = () => {
                     <span>Connect</span>
                   </GradientButton>
                 </div>
-              </div>
-            </div>
           </Card>
 
         </Motion.div>
