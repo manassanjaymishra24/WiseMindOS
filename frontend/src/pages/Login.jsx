@@ -88,7 +88,6 @@ const Login = () => {
   useEffect(() => {
     console.log('Login useEffect - token:', token, 'user:', user);
     if (token && user) {
-      console.log('Navigating to dashboard');
       navigate('/dashboard');
     }
   }, [token, user, navigate]);
