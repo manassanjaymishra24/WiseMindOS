@@ -1,19 +1,31 @@
 import goalModel from '../models/goalModel.js';
 import taskModel from '../models/taskModel.js';
 
+const normalizeGoalTitle = (title) => (title ?? '').trim().toLowerCase();
+
 // Create Goal
 const createGoal = async (req, res) => {
     try {
         const { title, type, description, deadline } = req.body;
         const userId = req.body.userId;
 
-        if (!title) {
+        if (!title || !title.trim()) {
             return res.json({ success: false, message: 'Title is required' });
+        }
+
+        const trimmedTitle = title.trim();
+        const existingGoals = await goalModel.find({ userId });
+        const isDuplicate = existingGoals.some(
+            (goal) => normalizeGoalTitle(goal.title) === normalizeGoalTitle(trimmedTitle)
+        );
+
+        if (isDuplicate) {
+            return res.json({ success: false, message: 'A goal with this title already exists' });
         }
 
         const newGoal = new goalModel({
             userId,
-            title,
+            title: trimmedTitle,
             type: type || 'personal',
             description: description || '',
             deadline: deadline || null

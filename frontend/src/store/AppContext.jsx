@@ -1,8 +1,8 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { goalAPI, projectAPI, taskAPI, habitAPI, dailyPlanAPI, statsAPI, notebookAPI, pageAPI, authAPI } from '../api/apiService';
 import { showToast } from '../utils/toastHelper';
-import { useRef } from 'react';
+import { DUPLICATE_GOAL_MESSAGE, isDuplicateGoalTitle } from '../utils/helpers';
 
 const AppContext = createContext();
 
@@ -46,10 +46,15 @@ export const AppProvider = ({ children }) => {
   const [pages, setPages] = useState([]);
 
   // HYBRID: Load initial data from localStorage or use defaults (fallback)
+  const goalsRef = useRef([]);
   const [goals, setGoals] = useState(() => {
     const saved = localStorage.getItem('wisemind_goals');
     return saved ? JSON.parse(saved) : [];
   });
+
+  useEffect(() => {
+    goalsRef.current = goals;
+  }, [goals]);
 
   const [projects, setProjects] = useState(() => {
     const saved = localStorage.getItem('wisemind_projects');
@@ -264,14 +269,27 @@ export const AppProvider = ({ children }) => {
 
   // Add Goal - Backend Integration
   const addGoal = async (goal) => {
+    const trimmedTitle = (goal.title ?? '').trim();
+    if (!trimmedTitle) {
+      showToast({ message: 'Goal title is required', status: 'error' });
+      return null;
+    }
+
+    if (isDuplicateGoalTitle(trimmedTitle, goalsRef.current)) {
+      showToast({ message: DUPLICATE_GOAL_MESSAGE, status: 'error' });
+      return null;
+    }
+
     try {
-      const response = await goalAPI.create(goal);
+      const response = await goalAPI.create({ ...goal, title: trimmedTitle });
       if (response.success) {
         const newGoal = {
           ...response.goal,
           id: response.goal._id
         };
-        setGoals([...goals, newGoal]);
+        const updatedGoals = [...goalsRef.current, newGoal];
+        goalsRef.current = updatedGoals;
+        setGoals(updatedGoals);
         showToast({ message: response.message || 'Goal created successfully', status: 'success' })
         return newGoal;
       } else {
