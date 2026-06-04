@@ -280,34 +280,39 @@ const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <Card className="mb-6 w-full relative overflow-hidden bg-[#0f1015]/60 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-indigo-500/10 before:via-purple-500/5 before:to-transparent before:z-0">
-            
-            <div className="relative z-10 w-full flex flex-col items-center">
-              <div className='w-full flex justify-between items-center mb-4'>
-                <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-semibold text-indigo-300 flex items-center gap-1 shadow-[0_0_10px_rgba(99,102,241,0.2)]">
-                    <Flame size={14} className="text-orange-400" /> {productivityInsights.consistencyScore > 70 ? 'Deep Worker' : 'Builder'}
-                  </span>
-                  <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-semibold text-emerald-300 flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
-                    Level 12
-                  </span>
-                </div>
-                <button onClick={() => setShowEditProfile(true)} className='bg-white/5 hover:bg-white/15 cursor-pointer border flex gap-2 border-white/10 hover:border-white/20 hover:scale-105 px-3 py-2.5 rounded-full text-white default-bold shadow-lg transition-all duration-300'> <UserPen size={18} /></button>
-              </div>
+          <Card className="mb-6 w-full  relative overflow-hidden bg-white/15 backdrop-blur-xl border-20 border-black/20 shadow-[0_0_40px_rgba(99,102,241,0.2)]">
 
-              {/* Layout for Avatar & Info (Row on Desktop, Col on Mobile) */}
-              <div className="flex flex-col md:flex-row items-center md:items-start gap-6 w-full md:px-4">
-                
-                {/* Image div  */}
-                <div className='h-32 w-32 md:h-36 md:w-36 rounded-full relative group p-[3px] bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 shadow-[0_0_30px_rgba(99,102,241,0.5)] shrink-0'>
-                  <img src={user.profile_picture || profile_pic} className='w-full h-full object-cover rounded-full border-[4px] border-[#0f1015]' alt="" />
-                  <div onClick={()=>setShowEditProfilePic(true)} className='w-full h-full bg-black/60 absolute rounded-full inset-0 cursor-pointer opacity-0 z-10 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm'>
-                    <div className='h-full w-full flex items-center justify-center'>
-                      <Camera size={24} className='text-white' />
-                    </div>
+            <div className="rounded w-full mb-6 flex flex-col items-center">
+              <div className='w-full flex items-end justify-end'>
+                <button
+                  type="button"
+                  onClick={() => setShowEditProfile(true)}
+                  aria-label="Edit profile details"
+                  className='bg-white/10 hover:bg-white/15 cursor-pointer border flex gap-2 border-white/15 hover:border-white/25 hover:translate-y-0.5 px-3 py-3 rounded-full text-white default-bold shadow-[0_0_10px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900'
+                >
+                  <UserPen aria-hidden="true" size={20} />
+                </button>
+              </div>
+              {/* Image div  */}
+              <div className='h-30 w-30 rounded-full relative group border-6 border-black/15 shadow-[0_0_40px_rgba(99,102,241,0.2)] shrink-0'>
+                <img src={user.profile_picture || profile_pic} className='w-full h-full object-cover rounded-full' alt={`${user.name || 'User'} profile`} />
+                <button
+                  type="button"
+                  onClick={()=>setShowEditProfilePic(true)}
+                  aria-label="Change profile picture"
+                  className='w-full h-full bg-black/50 absolute rounded-full inset-0 cursor-pointer opacity-0 z-10 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900'
+                >
+                  <div className='h-full w-full flex items-center justify-center'>
+                    <Camera aria-hidden="true" size={18} className='text-white' />
                   </div>
-                  <div className='border-4 h-6 w-6 rounded-full z-10 bottom-1 absolute right-2 border-green-500 bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.8)]'></div>
-                </div>
+                </button>
+                <div className='border-6 h-5 w-5 rounded-full z-10 bottom-1 absolute right-1 border-green-400'></div>
+              </div>
+              <div className='flex flex-col items-center'>
+                <span className='text-3xl md:text-4xl text-center default-bold text-gray-100'>{user.name || 'User'}</span>
+                <span className='cursor-pointer text-sm text-gray-300'>@{user.username || 'username'}</span>
+              </div>
+            </div>
 
                 <div className='flex flex-col items-center md:items-start flex-1 w-full'>
                   <span className='text-3xl md:text-4xl default-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400'>{user.name || 'User'}</span>
@@ -737,13 +742,15 @@ const Dashboard = () => {
                         {/* Completion Toggle */}
                         <button
                           onClick={() => toggleDailyPlanTaskCompletion(item.id)}
+                          aria-label={`${item.completed ? 'Mark incomplete' : 'Mark complete'}: ${item.title}`}
+                          aria-pressed={item.completed}
                           className={`p-2 rounded-lg transition-all ${item.completed
                             ? 'bg-green-500/20 text-green-400'
                             : 'bg-gray-700/50 text-gray-400 hover:bg-green-500/20 hover:text-green-400'
-                            }`}
+                            } focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900`}
                           data-testid={`toggle-planned-task-${item.id}`}
                         >
-                          <CheckCircle size={20} />
+                          <CheckCircle aria-hidden="true" size={20} />
                         </button>
                       </div>
                     </div>
@@ -946,8 +953,9 @@ const Dashboard = () => {
           />
 
           <div>
-            <label className="block text-gray-300 text-sm font-medium mb-2">Bio</label>
+            <label htmlFor="profile-bio" className="block text-gray-300 text-sm font-medium mb-2">Bio</label>
             <textarea
+              id="profile-bio"
               value={newProfile.bio}
               onChange={(e) => setNewProfile({ ...newProfile, bio: e.target.value })}
               placeholder="Say something intresting about you..."
@@ -972,9 +980,9 @@ const Dashboard = () => {
               <input hidden type="file" accept='image/*' id='profile_picture' className='w-full p-3 border border-gray-200 rounded-lg' onChange={(e) => setNewProfilePic(e.target.files[0])} />
 
               <div className='group/profile relative'>
-                <img src={newProfilePic ? URL.createObjectURL(newProfilePic) : user.profile_picture || profile_pic} alt="" className='w-24 h-24 rounded-full object-cover mt-2' />
+                <img src={newProfilePic ? URL.createObjectURL(newProfilePic) : user.profile_picture || profile_pic} alt="Profile picture preview" className='w-24 h-24 rounded-full object-cover mt-2' />
                 <div className='absolute hidden cursor-pointer group-hover/profile:flex top-0 left-0 right-0 bottom-0 bg-black/20 rounded-full items-center justify-center'>
-                  <Pencil className='w-5 h-5 text-white' />
+                  <Pencil aria-hidden="true" className='w-5 h-5 text-white' />
                 </div>
               </div>
             </label>
