@@ -978,7 +978,7 @@ const Dashboard = () => {
               <input hidden type="file" accept='.png, .jpg, .jpeg, .webp' id='profile_picture' className='w-full p-3 border border-gray-200 rounded-lg' onChange={(e) => {
                 const file = e.target.files[0];
                 if (file) {
-                  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
                   if (allowedTypes.includes(file.type)) {
                     setNewProfilePic(file);
                   } else {
