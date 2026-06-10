@@ -17,6 +17,8 @@ const Onboarding = () => {
   const [executionMap, setExecutionMap] = useState({}); // goalId -> { projects: [], tasks: [] }
   const [currentExecution, setCurrentExecution] = useState({ type: 'task', title: '', deadline: '' });
   const [goalError, setGoalError] = useState('');
+  const today = new Date();
+  const minDeadline = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
   const predefinedGoals = [
     'Software Developer',
@@ -88,6 +90,10 @@ const Onboarding = () => {
 
   const handleAddExecution = () => {
     if (!currentExecution.title.trim() || !selectedGoalForMapping) return;
+    if (currentExecution.deadline && currentExecution.deadline < minDeadline) {
+      alert('Deadline cannot be earlier than today');
+      return;
+    }
 
     const goalMap = executionMap[selectedGoalForMapping] || { projects: [], tasks: [] };
 
@@ -411,6 +417,7 @@ ${alreadyAdded
                       <InputField
                         label="Deadline (Optional)"
                         type="date"
+                        min={minDeadline}
                         value={currentExecution.deadline}
                         onChange={(e) => setCurrentExecution({ ...currentExecution, deadline: e.target.value })}
                         data-testid="execution-deadline-input"
