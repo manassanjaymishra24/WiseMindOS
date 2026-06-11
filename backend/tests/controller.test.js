@@ -7,6 +7,8 @@ import { toggleTaskCompletion } from '../controllers/taskController.js';
 import authUser from '../middlewares/auth.js';
 import dailyPlanModel from '../models/dailyPlanModel.js';
 import goalModel from '../models/goalModel.js';
+import notebookModel from '../models/notebookModel.js';
+import pageModel from '../models/pageModel.js';
 import taskModel from '../models/taskModel.js';
 
 const originals = [];

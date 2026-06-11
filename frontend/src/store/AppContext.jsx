@@ -653,7 +653,7 @@ export const AppProvider = ({ children }) => {
   const createPage = async (notebookId) => {
     const res = await pageAPI.create({ notebookId });
     if (res.success) {
-      setPages(prev => [...prev, { ...res.page, id: res.page._id }]);
+      await loadPages(notebookId);
     }
   };
 
@@ -683,7 +683,11 @@ export const AppProvider = ({ children }) => {
   const deletePage = async (pageId, notebookId) => {
     const res = await pageAPI.delete(pageId, notebookId);
     if (res.success) {
-      setPages(prev => prev.filter(p => p.id !== pageId));
+      const data = (res.pages ?? []).map(p => ({
+        ...p,
+        id: p._id
+      }));
+      setPages(data);
     }
   };
 
