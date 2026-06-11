@@ -48,13 +48,31 @@ const loadPersistedState = () => {
           endTimestamp: parsed.endTimestamp,
         };
       }
+      let newMode = mode;
+      let newPomodoroCount = pomodoroCount;
+      let newTimeLeft = 0;
+
+      if (mode === 'work') {
+        newPomodoroCount += 1;
+        if (newPomodoroCount % 4 === 0) {
+          newMode = 'longBreak';
+          newTimeLeft = MODE_DURATIONS.longBreak;
+        } else {
+          newMode = 'shortBreak';
+          newTimeLeft = MODE_DURATIONS.shortBreak;
+        }
+      } else {
+        newMode = 'work';
+        newTimeLeft = MODE_DURATIONS.work;
+      }
+
       return {
-        mode,
-        pomodoroCount,
+        mode: newMode,
+        pomodoroCount: newPomodoroCount,
         isActive: false,
-        timeLeftSeconds: 0,
+        timeLeftSeconds: newTimeLeft,
         endTimestamp: null,
-        _expiredWhileAway: true,
+        _expiredWhileAway: mode,
       };
     }
 
@@ -79,7 +97,7 @@ const persistState = ({ mode, pomodoroCount, isActive, timeLeftSeconds, endTimes
 
 export const FocusProvider = ({ children }) => {
   const initial = loadPersistedState();
-  const expiredOnLoad = initial._expiredWhileAway;
+  const expiredMode = initial._expiredWhileAway;
   delete initial._expiredWhileAway;
 
   const [mode, setMode] = useState(initial.mode);
@@ -152,10 +170,14 @@ export const FocusProvider = ({ children }) => {
   }, [isActive, endTimestamp, applyTimerComplete]);
 
   useEffect(() => {
-    if (expiredOnLoad) {
-      applyTimerComplete();
+    if (expiredMode) {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('Timer Complete!', {
+          body: expiredMode === 'work' ? 'Time for a break!' : 'Time to work!',
+        });
+      }
     }
-  }, [expiredOnLoad, applyTimerComplete]);
+  }, [expiredMode]);
 
   const toggleTimer = useCallback(() => {
     if (isActive) {

@@ -16,7 +16,7 @@ export const useApp = () => {
 
 export const AppProvider = ({ children }) => {
 
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState(() => localStorage.getItem('token') || '');
   const navigate = useNavigate();
   const backendURL = import.meta.env.VITE_BACKEND_URL;
   const [loading, setLoading] = useState(false);
@@ -26,14 +26,6 @@ export const AppProvider = ({ children }) => {
     const saved = localStorage.getItem('wisemind_user');
     return saved ? JSON.parse(saved) : null;
   });
-
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
 
   // Persist user to localStorage
   useEffect(() => {
