@@ -64,6 +64,20 @@ const addToDailyPlan = async (req, res, next) => {
             return res.json({ success: false, message: 'habitId required for habit source' });
         }
 
+        // Validate that the source record exists
+        if (source === 'task' && taskId) {
+            const task = await taskModel.findOne({ _id: taskId, userId });
+            if (!task) {
+                return res.json({ success: false, message: 'Task not found' });
+            }
+        }
+        if (source === 'habit' && habitId) {
+            const habit = await habitModel.findOne({ _id: habitId, userId });
+            if (!habit) {
+                return res.json({ success: false, message: 'Habit not found' });
+            }
+        }
+
         // Get or create today's plan
         let dailyPlan = await dailyPlanModel.findOne({ userId, date: today });
         if (!dailyPlan) {
