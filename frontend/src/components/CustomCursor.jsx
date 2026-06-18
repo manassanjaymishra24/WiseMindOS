@@ -13,6 +13,7 @@ export default function CustomCursor() {
 
     let mouseX = 0, mouseY = 0;
     let ringX = 0, ringY = 0;
+    let rafId;
 
     const onMove = (e) => {
       mouseX = e.clientX;
@@ -28,7 +29,7 @@ export default function CustomCursor() {
       if (ringRef.current) {
         ringRef.current.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
       }
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
 
     const onEnter = () => {
@@ -40,15 +41,24 @@ export default function CustomCursor() {
       ringRef.current?.classList.add("opacity-60", "border-violet-600");
     };
 
-    document.addEventListener("mousemove", onMove);
-    document.querySelectorAll("a, button, [data-cursor-hover]")
-      .forEach(el => {
-        el.addEventListener("mouseenter", onEnter);
-        el.addEventListener("mouseleave", onLeave);
-      });
+    const interactiveEls = document.querySelectorAll("a, button, [data-cursor-hover]");
 
-    animate();
-    return () => document.removeEventListener("mousemove", onMove);
+    document.addEventListener("mousemove", onMove);
+    interactiveEls.forEach(el => {
+      el.addEventListener("mouseenter", onEnter);
+      el.addEventListener("mouseleave", onLeave);
+    });
+
+    rafId = requestAnimationFrame(animate);
+
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(rafId);
+      interactiveEls.forEach(el => {
+        el.removeEventListener("mouseenter", onEnter);
+        el.removeEventListener("mouseleave", onLeave);
+      });
+    };
   }, []);
 
   if (isTouch) return null;
