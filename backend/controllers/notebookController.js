@@ -10,12 +10,19 @@ export const reorderNotebooks = async (userId) => {
     .find({ userId })
     .sort({ order: 1 });
 
-  const bulkOps = remainingNotebooks.map((notebook, index) => ({
-    updateOne: {
-      filter: { _id: notebook._id },
-      update: { $set: buildNotebookReorderUpdate(notebook, index) },
-    },
-  }));
+  const bulkOps = remainingNotebooks
+    .map((notebook, index) => {
+      const desiredOrder = index + 1;
+      if (notebook.order === desiredOrder) return null;
+
+      return {
+        updateOne: {
+          filter: { _id: notebook._id },
+          update: { $set: buildNotebookReorderUpdate(notebook, index) },
+        },
+      };
+    })
+    .filter(Boolean);
 
   if (bulkOps.length > 0) {
     await notebookModel.bulkWrite(bulkOps);
