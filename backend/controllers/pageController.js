@@ -1,6 +1,33 @@
 import pageModel from "../models/pageModel.js";
 import notebookModel from "../models/notebookModel.js";
 
+const buildPageReorderUpdate = (_page, index) => {
+  const newOrder = index + 1;
+  return {
+    order: newOrder,
+    title: `Page ${newOrder}`,
+  };
+};
+
+export const reorderNotebookPages = async (notebookId, userId) => {
+  const remainingPages = await pageModel
+    .find({ notebookId, userId })
+    .sort({ order: 1 });
+
+  const bulkOps = remainingPages.map((page, index) => ({
+    updateOne: {
+      filter: { _id: page._id },
+      update: { $set: buildPageReorderUpdate(page, index) },
+    },
+  }));
+
+  if (bulkOps.length > 0) {
+    await pageModel.bulkWrite(bulkOps);
+  }
+
+  return remainingPages.length;
+};
+
 // ➤ Create Page (max 100 per notebook)
 export const createPage = async (req, res, next) => {
   try {
@@ -122,7 +149,13 @@ export const deletePage = async (req, res, next) => {
       await notebook.save();
     }
 
-    res.json({ success: true });
+    await reorderNotebookPages(page.notebookId, userId);
+
+    const pages = await pageModel
+      .find({ notebookId: page.notebookId, userId })
+      .sort({ order: 1 });
+
+    res.json({ success: true, pages });
 
   } catch (error) {
     res.json({ success: false, message: error.message });
