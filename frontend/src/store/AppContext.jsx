@@ -641,7 +641,14 @@ export const AppProvider = ({ children }) => {
   const deleteNotebook = async (notebookId) => {
     const res = await notebookAPI.delete(notebookId);
     if (res.success) {
-      setNotebooks(prev => prev.filter(n => n.id !== notebookId));
+      if (res.notebooks) {
+        setNotebooks(res.notebooks.map(n => ({
+          ...n,
+          id: n._id
+        })));
+      } else {
+        setNotebooks(prev => prev.filter(n => n.id !== notebookId));
+      }
     }
   };
 

@@ -1,6 +1,29 @@
 import notebookModel from "../models/notebookModel.js";
 import pageModel from "../models/pageModel.js";
 
+const buildNotebookReorderUpdate = (_notebook, index) => ({
+  order: index + 1,
+});
+
+export const reorderNotebooks = async (userId) => {
+  const remainingNotebooks = await notebookModel
+    .find({ userId })
+    .sort({ order: 1 });
+
+  const bulkOps = remainingNotebooks.map((notebook, index) => ({
+    updateOne: {
+      filter: { _id: notebook._id },
+      update: { $set: buildNotebookReorderUpdate(notebook, index) },
+    },
+  }));
+
+  if (bulkOps.length > 0) {
+    await notebookModel.bulkWrite(bulkOps);
+  }
+
+  return remainingNotebooks.length;
+};
+
 // ➤ Create Notebook (max 40)
 export const createNotebook = async (req, res, next) => {
   try {
@@ -94,7 +117,13 @@ export const deleteNotebook = async (req, res, next) => {
     // delete all pages of this notebook
     await pageModel.deleteMany({ notebookId });
 
-    res.json({ success: true });
+    await reorderNotebooks(userId);
+
+    const notebooks = await notebookModel
+      .find({ userId })
+      .sort({ order: 1 });
+
+    res.json({ success: true, notebooks });
 
   } catch (error) {
     res.json({ success: false, message: error.message });
