@@ -8,7 +8,7 @@ const normalizeGoalTitle = (title) => (title ?? '').trim().toLowerCase();
 const createGoal = async (req, res, next) => {
     try {
         const { title, type, description, deadline } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
 
         if (!title || !title.trim()) {
             return res.json({ success: false, message: 'Title is required' });
@@ -43,7 +43,7 @@ const createGoal = async (req, res, next) => {
 // Get All Goals
 const getGoals = async (req, res, next) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const goals = await goalModel.find({ userId });
 
         // Calculate progress dynamically for each goal
@@ -69,7 +69,7 @@ const getGoals = async (req, res, next) => {
 const updateGoal = async (req, res, next) => {
     try {
         const { goalId, title, type, description, deadline } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
 
         if (!goalId) {
             return res.json({ success: false, message: 'Goal ID is required' });
@@ -97,7 +97,7 @@ const updateGoal = async (req, res, next) => {
 const deleteGoal = async (req, res, next) => {
     try {
         const { goalId } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
 
         if (!goalId) {
             return res.json({ success: false, message: 'Goal ID is required' });

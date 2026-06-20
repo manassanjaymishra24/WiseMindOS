@@ -19,7 +19,7 @@ const isToday = (date) => {
 const createHabit = async (req, res, next) => {
     try {
         const { name, type, startTime, endTime, mode } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
 
         if (!name) {
             return res.json({ success: false, message: 'Habit name is required' });
@@ -47,7 +47,7 @@ const createHabit = async (req, res, next) => {
 // Get All Habits
 const getHabits = async (req, res, next) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const habits = await habitModel.find({ userId });
         res.json({ success: true, habits });
 
@@ -87,7 +87,7 @@ const updateHabit = async (req, res, next) => {
 const completeHabit = async (req, res, next) => {
     try {
         const { habitId } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
 
         if (!habitId) {
             return res.json({ success: false, message: 'Habit ID is required' });
@@ -186,7 +186,7 @@ const completeHabit = async (req, res, next) => {
 const deleteHabit = async (req, res, next) => {
     try {
         const { habitId } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
 
         if (!habitId) {
             return res.json({ success: false, message: 'Habit ID is required' });

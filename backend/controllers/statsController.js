@@ -4,7 +4,7 @@ import dailyStatsModel from '../models/dailyStatsModel.js';
 const saveDailyStats = async (req, res, next) => {
   try {
     const { productivity, discipline } = req.body;
-    const userId = req.body.userId || req.headers.userid;
+    const userId = req.user.id;
 
     if (productivity === undefined || discipline === undefined) {
       return res.json({ success: false, message: 'Scores are required' });
@@ -37,7 +37,10 @@ const saveDailyStats = async (req, res, next) => {
 // ✅ GET LAST 7 DAYS STATS
 const getWeeklyStats = async (req, res, next) => {
   try {
-    const userId = req.body.userId || req.headers.userid;
+    const userId = req.user.id;
+
+    const lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
 
     const lastWeek = new Date();
     lastWeek.setDate(lastWeek.getDate() - 7);

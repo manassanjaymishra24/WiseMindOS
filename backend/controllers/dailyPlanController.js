@@ -19,7 +19,7 @@ const isToday = (date) => {
 // Get Today's Daily Plan (or create if not exists)
 const getTodayPlan = async (req, res, next) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const today = new Date().toISOString().split('T')[0];
 
         let dailyPlan = await dailyPlanModel.findOne({ userId, date: today });
@@ -45,7 +45,7 @@ const getTodayPlan = async (req, res, next) => {
 const addToDailyPlan = async (req, res, next) => {
     try {
         const { source, taskId, habitId, title, startTime, endTime, isImportant } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const today = new Date().toISOString().split('T')[0];
 
         if (!source || !title || !startTime || !endTime) {
@@ -138,7 +138,7 @@ const addToDailyPlan = async (req, res, next) => {
 const removeFromDailyPlan = async (req, res, next) => {
     try {
         const { plannedTaskId } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const today = new Date().toISOString().split('T')[0];
 
         if (!plannedTaskId) {
@@ -171,7 +171,7 @@ const removeFromDailyPlan = async (req, res, next) => {
 const toggleDailyPlanTask = async (req, res, next) => {
     try {
         const { plannedTaskId } = req.body;
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const today = new Date().toISOString().split('T')[0];
 
         if (!plannedTaskId) {
@@ -254,7 +254,7 @@ const toggleDailyPlanTask = async (req, res, next) => {
 // Clear Daily Plan
 const clearDailyPlan = async (req, res, next) => {
     try {
-        const userId = req.body.userId;
+        const userId = req.user.id;
         const today = new Date().toISOString().split('T')[0];
 
         const dailyPlan = await dailyPlanModel.findOne({ userId, date: today });
