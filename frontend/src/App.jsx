@@ -31,6 +31,8 @@ import { ToastContainer } from 'react-toastify';
 import ErrorBoundary from './components/ErrorBoundary';
 import ErrorPage from './pages/ErrorPage';
 import CustomCursor from './components/CustomCursor';
+import ScrollToTop from "./components/ScrollToTop";
+import NotFound from "../pages/NotFound";
 
 function App() {
   const { token } = useApp();
@@ -66,6 +68,7 @@ function App() {
             <Route path="/future-twin" element={<FutureTwin />} />
             <Route path="/future" element={<FutureTwin />} />
             <Route path="/library" element={<Library />} />
+            <Route path="*" element={<NotFound />} />
 
           </Route>
 
@@ -73,6 +76,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     </ErrorBoundary>
+    <ScrollToTop />
   );
 }
 
